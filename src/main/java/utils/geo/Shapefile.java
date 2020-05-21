@@ -67,7 +67,7 @@ public class Shapefile implements Closeable {
 		m_file = file;
 		m_charset = charset;
 		m_shpFiles = new ShpFiles(file);
-		m_dbfHeader = Lazy.of(Unchecked.getOrThrowSneakily(this::readDbfHeader));
+		m_dbfHeader = Lazy.of(() -> Unchecked.getOrThrowSneakily(this::readDbfHeader));
 	}
 
 	@Override

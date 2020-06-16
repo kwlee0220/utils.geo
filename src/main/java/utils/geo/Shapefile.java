@@ -36,8 +36,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import utils.Throwables;
 import utils.func.FOption;
 import utils.func.Lazy;
+import utils.func.Try;
 import utils.func.Unchecked;
-import utils.io.IOUtils;
 import utils.stream.FStream;
 import utils.stream.FStreams.AbstractFStream;
 
@@ -221,7 +221,10 @@ public class Shapefile implements Closeable {
 				throw new AssertionError();
 			}
 			finally {
-				IOUtils.closeQuietly(reader);
+				if ( reader != null ) {
+					Try.run(reader::close);
+					reader = null;
+				}
 			}
 		}
 		

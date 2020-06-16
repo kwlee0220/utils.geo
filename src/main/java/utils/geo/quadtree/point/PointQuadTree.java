@@ -78,24 +78,7 @@ public class PointQuadTree<T extends PointValue, P extends PointPartition<T>> {
 			}
 			
 			// 현재 단말노드에 더 이상 값을 넣을 수 없는 경우는 노드를 분할시킨다.
-			PointNonLeafNode<T,P> parent = lroot.split();
-			
-			// 분할된 모든 데이터가 하나의 split에만 저장되는 경우,
-			// 최상위 노드의 tile을 해당 split의 tile로 축소시킨다.
-			List<PointNode<T,P>> nonEmptyChilds = FStream.of(parent.getChildrenNode())
-														.filter(n -> n.getValueCount()>0)
-														.toList();
-			if ( nonEmptyChilds.size() > 1 ) {
-				m_root = parent;
-			}
-			else {
-				m_root = nonEmptyChilds.get(0);
-				if ( m_root instanceof PointLeafNode ) {
-					lroot = (PointLeafNode<T,P>)m_root;
-					lroot.setPreviousLeafNode(null);
-					lroot.setNextLeafNode(null);
-				}
-			}
+			m_root = lroot.split();
 		}
 		
 		return ((PointNonLeafNode<T,P>)m_root).insert(value);

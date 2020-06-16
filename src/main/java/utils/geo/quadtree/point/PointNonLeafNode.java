@@ -133,8 +133,15 @@ public class PointNonLeafNode<T extends PointValue, P extends PointPartition<T>>
 				return ((PointNonLeafNode<T,P>)child).insert(value);
 			}
 		}
+		
 		// 본 non-leaf 노드 영역에 주어진 데이터가 포함되는 것으로 계산되지만
 		// 실제 어떤 하위 노드에도 겹치지 않은 경우 -> 생길 수 없는 경우.
+		for ( int i =0; i < m_children.length; ++i ) {
+			PointNode<T,P> child = m_children[i];
+			s_logger.error("child[{}]: {}", i, child.getBounds());
+		}
+		s_logger.error("key: {}", coord);
+		
 		String msg = String.format("bounds=%s, value=%s", getBounds(), value);
 		s_logger.error(msg);
 		throw new IllegalStateException("unexpected state for insert: " + msg);

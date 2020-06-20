@@ -18,7 +18,6 @@ version = '20.05.15'
 sourceCompatibility = JavaVersion.VERSION_1_8
 [compileJava,compileTestJava]*.options*.encoding = 'UTF-8'
 
-
 repositories {
     mavenLocal()
 	maven {
@@ -30,7 +29,8 @@ repositories {
 ext.geotools_version = '19.3'
 
 dependencies {
-	compile project(":utils")
+//	compile project(":utils")
+	compile project(":utils.record")
 	
 	compile "org.geotools:gt-shapefile:${geotools_version}"
 }

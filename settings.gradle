@@ -1,6 +1,7 @@
 rootProject.name = 'utils.geo'
 
-['utils'].each {
+ext.common_dir = '..'
+['utils','utils.record'].each {
 	include ":$it"
-	project(":$it").projectDir = file("../$it")
+	project(":$it").projectDir = file("${common_dir}/$it")
 }

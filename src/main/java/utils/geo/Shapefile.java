@@ -38,6 +38,8 @@ import utils.func.FOption;
 import utils.func.Lazy;
 import utils.func.Try;
 import utils.func.Unchecked;
+import utils.record.geotools.ShapefileRecordSetReader;
+import utils.record.geotools.SimpleFeatures;
 import utils.stream.FStream;
 import utils.stream.FStreams.AbstractFStream;
 
@@ -198,6 +200,10 @@ public class Shapefile implements Closeable {
 	public FStream<Envelope> streamEnvelopes() throws ShapefileException, IOException {
 		return new EnvelopeStream(read());
 	}
+	
+	public SimpleFeatureType getSimpleFeatureType() throws IOException {
+		return SimpleFeatureDataStore.of(m_file).getSchema();
+	}
 
 	/**
 	 * 본 Shapefile 객체 포함된  feature들을 접근하는 리더 객체를 반환한다.
@@ -206,7 +212,7 @@ public class Shapefile implements Closeable {
 	 * @throws IOException	feature 접근을 위해 파일을 읽는 도중 오류가 발생한 경우.
 	 */
 	public FStream<SimpleFeature> streamFeatures() throws IOException {
-		return new SimpleFeatureStream(m_file);
+		return new SimpleFeatureStream(m_file, m_charset);
 	}
 	
 	public ShapefileHeader getShpHeader() {
@@ -387,8 +393,8 @@ public class Shapefile implements Closeable {
 		private final SimpleFeatureDataStore m_sfdStore;
 		private final SimpleFeatureIterator m_iter;
 		
-		private SimpleFeatureStream(File shpFilePath) throws IOException {
-			m_sfdStore = SimpleFeatureDataStore.of(shpFilePath);
+		private SimpleFeatureStream(File shpFilePath, Charset charset) throws IOException {
+			m_sfdStore = SimpleFeatureDataStore.of(shpFilePath, charset);
 			m_iter = m_sfdStore.read().features();
 		}
 

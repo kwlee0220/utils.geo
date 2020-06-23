@@ -38,8 +38,6 @@ import utils.func.FOption;
 import utils.func.Lazy;
 import utils.func.Try;
 import utils.func.Unchecked;
-import utils.record.geotools.ShapefileRecordSetReader;
-import utils.record.geotools.SimpleFeatures;
 import utils.stream.FStream;
 import utils.stream.FStreams.AbstractFStream;
 

@@ -1,16 +1,4 @@
 apply plugin: 'java-library'
-apply plugin: 'maven-publish'
-apply plugin: 'com.github.johnrengelman.shadow'
-
-buildscript {
-	repositories {
-		mavenLocal()
-		jcenter()
-	}
-	dependencies {
-		classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-	}
-}
 
 group = 'etri'
 version = '20.05.15'
@@ -26,13 +14,8 @@ repositories {
     mavenCentral()
 }
 
-ext.geotools_version = '19.3'
-
 dependencies {
-//	compile project(":utils")
-	compile project(":utils.record")
-	
-	compile "org.geotools:gt-shapefile:${geotools_version}"
+	compile project(":record.shp")
 }
 
 task sourceJar(type: Jar) {
@@ -45,22 +28,12 @@ task javadocJar(type: Jar) {
 	from javadoc.destinationDir
 }
 
-shadowJar {
-	classifier 'all'
-	
-	mergeServiceFiles()
-	
-	exclude 'META-INF/*.SF'
-	exclude 'META-INF/*.DSA'
-	exclude 'META-INF/*.RSA'
-}
-
 artifacts {
 	archives sourceJar
 	archives javadocJar
-//	archives shadowJar
 }
 
+apply plugin: 'maven-publish'
 publishing {
 	publications {
 		commonGrpc(MavenPublication) {
@@ -68,7 +41,6 @@ publishing {
 			
 			artifact sourceJar
 			artifact javadocJar
-			artifact shadowJar
 		}
 	}
 }

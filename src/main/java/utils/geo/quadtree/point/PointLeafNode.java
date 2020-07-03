@@ -49,6 +49,11 @@ public class PointLeafNode<T extends PointValue, P extends PointPartition<T>> ex
 	public int getValueCount() {
 		return m_partition.size();
 	}
+
+	@Override
+	public int getDepth() {
+		return 1;
+	}
 	
 	public FStream<T> values() {
 		return m_partition.values();

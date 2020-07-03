@@ -9,7 +9,9 @@ import java.nio.charset.Charset;
 import javax.annotation.Nullable;
 
 import org.apache.commons.io.FileUtils;
+import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.PrjFileReader;
+import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDumper;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
@@ -147,6 +149,13 @@ public class Shapefile implements Closeable {
 		return new IndexFile(m_shpFiles, false);
 	}
 	
+	public ShapefileDataStore getDataStore() throws IOException {
+		ShapefileDataStore store = (ShapefileDataStore)FileDataStoreFinder.getDataStore(m_file);
+		store.setCharset(m_charset);
+		
+		return store;
+	}
+	
 	/**
 	 * 본 Shapefile에 저장된 공간 정의 좌표계를 반환한다.
 	 * 
@@ -159,6 +168,10 @@ public class Shapefile implements Closeable {
 			PrjFileReader reader = new PrjFileReader(is.getChannel());
 			return reader.getCoordinateReferenceSystem();
 		}
+	}
+	
+	public String readSrid() throws IOException, FactoryException {
+		return CRSUtils.toEPSG(readCrs());
 	}
 	
 	/**
@@ -254,7 +267,7 @@ public class Shapefile implements Closeable {
 	 * 					별도로 지정하지 않는 경우는 {@link FOption#empty}를 사용한다.
 	 */
 	public static void writeShapefile(File outputDir, Iterable<SimpleFeature> features,
-										FOption<Charset> charset, FOption<Long> maxShpSize,
+										Charset charset, FOption<Long> maxShpSize,
 										FOption<Long> maxDbfSize) throws IOException {
 		SimpleFeatureType sfType = features.iterator().next().getType();
 		writeShapefile(outputDir, sfType, features, charset, maxShpSize, maxDbfSize);
@@ -276,7 +289,7 @@ public class Shapefile implements Closeable {
 	 * 					별도로 지정하지 않는 경우는 {@link FOption#empty}를 사용한다.
 	 */
 	public static void writeShapefile(File outputDir, SimpleFeatureType sfType,
-										Iterable<SimpleFeature> features, FOption<Charset> charset,
+										Iterable<SimpleFeature> features, Charset charset,
 										FOption<Long> maxShpSize, FOption<Long> maxDbfSize) throws IOException {
 		SimpleFeatureCollection sfColl = new BaseSimpleFeatureCollection(sfType) {
 			@Override
@@ -302,16 +315,25 @@ public class Shapefile implements Closeable {
 	 * 					별도로 지정하지 않는 경우는 {@link FOption#empty}를 사용한다.
 	 */
 	public static void writeShapefile(File outputDir, SimpleFeatureCollection sfColl,
-										FOption<Charset> charset, FOption<Long> maxShpSize,
+										Charset charset, FOption<Long> maxShpSize,
 										FOption<Long> maxDbfSize) throws IOException {
 		FileUtils.forceMkdir(outputDir);
 		
 		ShapefileDumper dumper = new ShapefileDumper(outputDir);
-		charset.ifPresent(dumper::setCharset);
+		dumper.setCharset(charset);
 		maxShpSize.ifPresent(dumper::setMaxShpSize);
 		maxDbfSize.ifPresent(dumper::setMaxDbfSize);
 		
 		dumper.dump(sfColl);
+	}
+	
+	public static FStream<File> traverseShpFiles(File start) throws IOException {
+		return utils.io.FileUtils.walk(start, "**/*.shp");
+	}
+	
+	public static FStream<Shapefile> traverse(File start, Charset charset) throws IOException {
+		return traverseShpFiles(start)
+						.mapOrThrow(file -> of(file, charset));
 	}
 	
 	private DbaseFileHeader readDbfHeader() throws IOException {

@@ -5,9 +5,3 @@ ext.common_dir = '..'
 	include ":$it"
 	project(":$it").projectDir = file("${common_dir}/$it")
 }
-
-ext.record_dir = "../../record"
-['record', 'record.shp'].each {
-	include ":$it"
-	project(":$it").projectDir = file("${record_dir}/$it")
-}

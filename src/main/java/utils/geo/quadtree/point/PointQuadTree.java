@@ -59,6 +59,10 @@ public class PointQuadTree<T extends PointValue, P extends PointPartition<T>> {
 		return m_rootBounds;
 	}
 	
+	public int getDepth() {
+		return m_root.getDepth();
+	}
+	
 	/**
 	 * 입력 공간 데이터를 삽입하고, 데이터가 삽입된 단말 노드를 반환한다.
 	 * 만일 복수 개의 단말 노드에 삽입된 경우는 모든 단말노드를 반환한다.

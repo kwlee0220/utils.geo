@@ -14,8 +14,19 @@ repositories {
     mavenCentral()
 }
 
+
+ext {
+	geotools_version = '19.3'
+	commons_io_version = '2.6'
+}
 dependencies {
-	compile project(":record.shp")
+	compile project(":utils")
+	
+	// GeoTools
+	implementation	"org.geotools:gt-epsg-hsql:${geotools_version}"
+	compile "org.geotools:gt-shapefile:${geotools_version}"
+	
+	implementation "commons-io:commons-io:${commons_io_version}"
 }
 
 task sourceJar(type: Jar) {

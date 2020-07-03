@@ -10,6 +10,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 import utils.geo.quadtree.TooBigValueException;
+import utils.stream.FStream;
 
 
 /**
@@ -34,6 +35,11 @@ public class PointNonLeafNode<T extends PointValue, P extends PointPartition<T>>
 	@Override
 	public int getValueCount() {
 		return Stream.of(m_children).mapToInt(PointNode::getValueCount).sum();
+	}
+
+	@Override
+	public int getDepth() {
+		return FStream.of(m_children).mapToInt(node -> node.getDepth()).maxValue() + 1;
 	}
 	
 	public PointNode<T,P>[] getChildrenNode() {

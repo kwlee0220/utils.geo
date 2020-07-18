@@ -43,7 +43,6 @@ import utils.Size2d;
 import utils.Size2i;
 import utils.Utilities;
 import utils.func.FOption;
-import utils.geo.GeometryUtils;
 import utils.stream.FStream;
 
 /**

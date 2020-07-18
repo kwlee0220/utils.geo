@@ -1,4 +1,4 @@
-package utils.geo;
+package utils.geo.util;
 
 import java.io.File;
 import java.net.URL;

@@ -98,4 +98,13 @@ public class CoordinateTransform {
 			return envl;
 		}
 	}
+	
+	public static Geometry transform(Geometry geom, String srcSrid, String destSrid) {
+		if ( geom != null ) {
+			return get(srcSrid, destSrid).transform(geom);
+		}
+		else {
+			return geom;
+		}
+	}
 }

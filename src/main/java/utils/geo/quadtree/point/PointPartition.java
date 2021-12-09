@@ -1,6 +1,6 @@
 package utils.geo.quadtree.point;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 import utils.stream.FStream;
 

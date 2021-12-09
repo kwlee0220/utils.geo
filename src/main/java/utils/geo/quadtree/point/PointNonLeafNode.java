@@ -3,11 +3,10 @@ package utils.geo.quadtree.point;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 
 import utils.geo.quadtree.TooBigValueException;
 import utils.stream.FStream;

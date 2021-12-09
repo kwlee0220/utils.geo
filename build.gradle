@@ -16,7 +16,7 @@ repositories {
 
 
 ext {
-	geotools_version = '19.3'
+	geotools_version = '26.1'
 	commons_io_version = '2.6'
 }
 dependencies {

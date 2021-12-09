@@ -4,11 +4,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 
+import org.locationtech.jts.geom.Envelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.vividsolutions.jts.geom.Envelope;
 
 import utils.Utilities;
 import utils.geo.quadtree.TooBigValueException;

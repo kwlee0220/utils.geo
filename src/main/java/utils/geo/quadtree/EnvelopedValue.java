@@ -1,6 +1,6 @@
 package utils.geo.quadtree;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * 

@@ -1,6 +1,6 @@
 package utils.geo.quadtree.point;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 import utils.geo.quadtree.EnvelopedValue;
 

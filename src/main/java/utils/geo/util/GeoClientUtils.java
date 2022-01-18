@@ -168,6 +168,33 @@ public class GeoClientUtils {
 		Coordinate bottomRight = new Coordinate(bbox.getMaxX(), bbox.getMaxY());
 		return GeometryUtils.toEnvelope(topLeft, bottomRight);
 	}
+	
+	public static String getType(Geometry geom) {
+		if ( geom == null ) {
+			return null;
+		}
+		else {
+			Geometries type = Geometries.get(geom);
+			switch ( type ) {
+				case MULTIPOLYGON:
+					return "ST_MultiPolygon";
+				case POINT:
+					return "ST_Point";
+				case POLYGON:
+					return "ST_Polygon";
+				case MULTIPOINT:
+					return "ST_MultiPoint";
+				case LINESTRING:
+					return "ST_LineString";
+				case MULTILINESTRING:
+					return "ST_MultiLineString";
+				case GEOMETRYCOLLECTION:
+					return "ST_GeometryCollection";
+				default:
+					throw new AssertionError("unexpected target type: type=" + type);
+			}
+		}
+	};
 
 	public static final int DEFAULT_REDUCER_FACTOR = Integer.MIN_VALUE;
 	public static final int NO_REDUCER_FACTOR = -1;

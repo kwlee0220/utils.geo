@@ -336,6 +336,11 @@ public class Shapefile implements Closeable {
 						.mapOrThrow(file -> of(file, charset));
 	}
 	
+	@Override
+	public String toString() {
+		return m_file.toString();
+	}
+	
 	private DbaseFileHeader readDbfHeader() throws IOException {
 		DbaseFileReader reader = null;
 		try {

@@ -8,9 +8,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenLocal()
-	maven {
-		url "http://repo.osgeo.org/repository/release/"
-	}
+	maven { url "http://repo.osgeo.org/repository/release/" }
     mavenCentral()
 }
 
@@ -23,8 +21,8 @@ dependencies {
 	compile project(":utils")
 	
 	// GeoTools
-	implementation	"org.geotools:gt-epsg-hsql:${geotools_version}"
 	api "org.geotools:gt-shapefile:${geotools_version}"
+	implementation "org.geotools:gt-epsg-hsql:${geotools_version}"
 	
 	implementation "commons-io:commons-io:${commons_io_version}"
 }
@@ -57,18 +55,6 @@ publishing {
 }
 
 apply plugin: 'eclipse'
-//eclipse {
-//	classpath {
-//		defaultOutputDir = file('build')
-//		file.whenMerged { cp ->
-//			cp.entries.each { entry ->
-//				if ( entry.kind == 'src' && entry.hasProperty('output') ) {
-//					entry.output = entry.output.replace('bin/', "build/")
-//				}
-//			}
-//		}
-//	}
-//}
 eclipse {
 	classpath {
 		file {

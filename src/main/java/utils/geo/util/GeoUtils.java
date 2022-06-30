@@ -34,6 +34,7 @@ import org.opengis.geometry.BoundingBox;
 import com.google.common.base.Preconditions;
 
 import utils.func.FOption;
+import utils.func.Tuple;
 
 /**
  * 
@@ -140,6 +141,10 @@ public class GeoUtils {
 		Envelope expanded = new Envelope(envl);
 		expanded.expandBy(distance);
 		return expanded;
+	}
+	
+	public static Tuple<Point,Point> getTLBR(Envelope envl) {
+		return Tuple.of(toPoint(envl.getMinX(), envl.getMinY()), toPoint(envl.getMaxX(), envl.getMaxY()));
 	}
 	
 	public static Polygon toPolygon(Envelope envl) {

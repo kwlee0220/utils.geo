@@ -15,6 +15,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineSegment;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;
@@ -33,6 +34,7 @@ import org.opengis.geometry.BoundingBox;
 
 import com.google.common.base.Preconditions;
 
+import utils.Utilities;
 import utils.func.FOption;
 import utils.func.Tuple;
 
@@ -43,7 +45,7 @@ import utils.func.Tuple;
 public class GeoUtils {
 	public final static GeometryFactory GEOM_FACT = new GeometryFactory();
 	public final static Point EMPTY_POINT = GEOM_FACT.createPoint((Coordinate)null);
-	public final static MultiPoint EMPTY_MULTIPOINT = GEOM_FACT.createMultiPoint((Coordinate[])null);
+	public final static MultiPoint EMPTY_MULTIPOINT = GEOM_FACT.createMultiPointFromCoords((Coordinate[])null);
 	public final static LineString EMPTY_LINESTRING = GEOM_FACT.createLineString(new Coordinate[0]);
 	public final static LinearRing EMPTY_LINEARRING = GEOM_FACT.createLinearRing(new Coordinate[0]);
 	public final static MultiLineString EMPTY_MULTILINESTRING = GEOM_FACT.createMultiLineString(null);
@@ -122,6 +124,16 @@ public class GeoUtils {
 	public static Point toPoint(Coordinate coord) {
 		return GEOM_FACT.createPoint(coord);
 	}
+	
+	public static double getAngleRadian(Coordinate p0, Coordinate p1) {
+		double diffX = p1.getX() - p0.getX();
+		double diffY = p1.getY() - p0.getY();
+		return Math.atan2(diffY, diffX);
+	}
+	
+	public static double getAngleRadian(Point p0, Point p1) {
+		return getAngleRadian(p0.getCoordinate(), p1.getCoordinate());
+	}
 
 	public static Envelope toEnvelope(double tlX, double tlY, double brX, double brY) {
 		Coordinate topLeft = new Coordinate(tlX, tlY);
@@ -147,6 +159,10 @@ public class GeoUtils {
 		return Tuple.of(toPoint(envl.getMinX(), envl.getMinY()), toPoint(envl.getMaxX(), envl.getMaxY()));
 	}
 	
+	public static Polygon toPolygon(Coordinate[] shell) {
+		return GEOM_FACT.createPolygon(shell);
+	}
+	
 	public static Polygon toPolygon(Envelope envl) {
 		Coordinate[] coords = new Coordinate[] {
 			new Coordinate(envl.getMinX(), envl.getMinY()),	
@@ -169,6 +185,25 @@ public class GeoUtils {
 		};
 		LinearRing shell = GEOM_FACT.createLinearRing(coords);
 		return GEOM_FACT.createPolygon(shell);
+	}
+	
+	public static LineSegment toLineSegment(Coordinate p0, Coordinate p1) {
+		return new LineSegment(p0, p1);
+	}
+	public static LineSegment toLineSegment(Point p0, Point p1) {
+		return new LineSegment(p0.getCoordinate(), p1.getCoordinate());
+	}
+	
+	public static double getAngleRadian(LineSegment seg) {
+		return seg.angle();
+	}
+	
+	public static double getAngleRadian(LineSegment l1, LineSegment l2) {
+		return l1.angle() - l2.angle();
+	}
+	
+	public static LineString toLineString(LineSegment seg) {
+		return GEOM_FACT.createLineString(new Coordinate[]{seg.p0, seg.p1});
 	}
 
 	public static Geometry fromWKT(String wktStr) throws ParseException {
@@ -202,8 +237,28 @@ public class GeoUtils {
 		new WKBWriter().write(geom, new OutputStreamOutStream(os));
 	}
 	
+	public static String toString(Coordinate coord) {
+		return String.format("(%f,%f)", coord.getX(), coord.getY());
+	}
+	
+	public static String toString(Coordinate coord, int decimals) {
+		String fmt = String.format("(%%.%df,%%.%df)", decimals, decimals);
+		return String.format(fmt, coord.getX(), coord.getY());
+	}
+	
 	public static String toString(Point pt) {
-		return String.format("(%f,%f)", pt.getX(), pt.getY());
+		return toString(pt.getCoordinate());
+	}
+	
+	public static String toString(Point pt, int decimals) {
+		return toString(pt.getCentroid(), decimals);
+	}
+	
+	public static String toString(LineSegment line) {
+		return String.format("%s-%s", toString(line.p0), toString(line.p1));
+	}
+	public static String toString(LineSegment line, int decimals) {
+		return String.format("%s->%s", toString(line.p0, decimals), toString(line.p1, decimals));
 	}
 
 	private static final String FPN = "(\\d+(\\.\\d*)?|(\\d+)?\\.\\d+)";

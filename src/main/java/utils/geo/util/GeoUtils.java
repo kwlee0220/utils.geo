@@ -34,7 +34,6 @@ import org.opengis.geometry.BoundingBox;
 
 import com.google.common.base.Preconditions;
 
-import utils.Utilities;
 import utils.func.FOption;
 import utils.func.Tuple;
 
@@ -251,7 +250,7 @@ public class GeoUtils {
 	}
 	
 	public static String toString(Point pt, int decimals) {
-		return toString(pt.getCentroid(), decimals);
+		return toString(pt.getCoordinate(), decimals);
 	}
 	
 	public static String toString(LineSegment line) {
@@ -287,6 +286,13 @@ public class GeoUtils {
 		double width = envl.getMaxX() - envl.getMinX();
 		double height = envl.getMaxY() - envl.getMinY();
 		return String.format("(%f,%f):%fx%f", envl.getMinX(), envl.getMinY(), width, height);
+	}
+	
+	public static String toString(Envelope envl, int decimals) {
+		double width = envl.getMaxX() - envl.getMinX();
+		double height = envl.getMaxY() - envl.getMinY();
+		String pattern = String.format("(%%.%df,%%.%df):%%.%dfx%%.%df", decimals, decimals, decimals, decimals);
+		return String.format(pattern, envl.getMinX(), envl.getMinY(), width, height);
 	}
 	
 	public static Point getCentroid(Envelope envl) {

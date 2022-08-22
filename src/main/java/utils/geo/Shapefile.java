@@ -39,6 +39,7 @@ import utils.func.FOption;
 import utils.func.Lazy;
 import utils.func.Try;
 import utils.func.Unchecked;
+import utils.func.UncheckedSupplier;
 import utils.geo.util.CRSUtils;
 import utils.stream.FStream;
 import utils.stream.FStreams.AbstractFStream;
@@ -84,7 +85,7 @@ public class Shapefile implements Closeable {
 		m_file = file;
 		m_charset = charset;
 		m_shpFiles = new ShpFiles(file);
-		m_dbfHeader = Lazy.of(() -> Unchecked.getOrThrowSneakily(this::readDbfHeader));
+		m_dbfHeader = Lazy.of(UncheckedSupplier.sneakyThrow(this::readDbfHeader));
 	}
 
 	@Override

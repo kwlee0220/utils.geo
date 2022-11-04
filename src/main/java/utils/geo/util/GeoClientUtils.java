@@ -3,6 +3,7 @@ package utils.geo.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -167,6 +168,79 @@ public class GeoClientUtils {
 		Coordinate topLeft = new Coordinate(bbox.getMinX(), bbox.getMinY());
 		Coordinate bottomRight = new Coordinate(bbox.getMaxX(), bbox.getMaxY());
 		return GeometryUtils.toEnvelope(topLeft, bottomRight);
+	}
+	
+	public static Point toPoint(double x, double y) {
+		return GEOM_FACT.createPoint(new Coordinate(x, y));
+	}
+	
+	public static Point toPoint(Coordinate coord) {
+		return GEOM_FACT.createPoint(coord);
+	}
+	
+	public static LineString toLineString(Coordinate... coords) {
+		return GEOM_FACT.createLineString(coords);
+	}
+	
+	public static LineString toLineString(List<Coordinate> coords) {
+		return GEOM_FACT.createLineString(coords.toArray(new Coordinate[coords.size()]));
+	}
+	
+	public static Polygon toPolygon(LinearRing shell, List<LinearRing> holes) {
+		LinearRing[] arr = holes.toArray(new LinearRing[holes.size()]);
+		return GEOM_FACT.createPolygon(shell, arr);
+	}
+	
+	public static Polygon toPolygon(Envelope envl) {
+		Coordinate[] coords = new Coordinate[] {
+			new Coordinate(envl.getMinX(), envl.getMinY()),	
+			new Coordinate(envl.getMaxX(), envl.getMinY()),	
+			new Coordinate(envl.getMaxX(), envl.getMaxY()),	
+			new Coordinate(envl.getMinX(), envl.getMaxY()),	
+			new Coordinate(envl.getMinX(), envl.getMinY()),	
+		};
+		LinearRing shell = GEOM_FACT.createLinearRing(coords);
+		return GEOM_FACT.createPolygon(shell);
+	}
+	
+	public static Polygon toPolygon(BoundingBox bbox) {
+		Coordinate[] coords = new Coordinate[] {
+			new Coordinate(bbox.getMinX(), bbox.getMinY()),	
+			new Coordinate(bbox.getMaxX(), bbox.getMinY()),	
+			new Coordinate(bbox.getMaxX(), bbox.getMaxY()),	
+			new Coordinate(bbox.getMinX(), bbox.getMaxY()),	
+			new Coordinate(bbox.getMinX(), bbox.getMinY()),	
+		};
+		LinearRing shell = GEOM_FACT.createLinearRing(coords);
+		return GEOM_FACT.createPolygon(shell);
+	}
+	
+	public static MultiPoint toMultiPoint(Point... pts) {
+		return GEOM_FACT.createMultiPoint(pts);
+	}
+	
+	public static MultiPoint toMultiPoint(Collection<Point> pts) {
+		return GEOM_FACT.createMultiPoint(pts.toArray(new Point[pts.size()]));
+	}
+	
+	public static MultiLineString toMultiLineString(LineString... lines) {
+		return GEOM_FACT.createMultiLineString(lines);
+	}
+	
+	public static MultiLineString toMultiLineString(Collection<LineString> lines) {
+		return GEOM_FACT.createMultiLineString(lines.toArray(new LineString[lines.size()]));
+	}
+	
+	public static MultiPolygon toMultiPolygon(Polygon... polys) {
+		return GEOM_FACT.createMultiPolygon(polys);
+	}
+	
+	public static MultiPolygon toMultiPolygon(List<Polygon> polyList) {
+		return GEOM_FACT.createMultiPolygon(polyList.toArray(new Polygon[polyList.size()]));
+	}
+	
+	public static MultiPolygon toMultiPolygon(FStream<Polygon> polygons) {
+		return GEOM_FACT.createMultiPolygon(polygons.toArray(Polygon.class));
 	}
 	
 	public static String getType(Geometry geom) {

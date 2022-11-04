@@ -22,7 +22,10 @@ public class CoordinateTransform {
 	private final CoordinateReferenceSystem m_tar;
 	private final MathTransform m_trans;
 	private final GeometryCoordinateSequenceTransformer m_geomCST;
-	
+
+	public static CoordinateTransform get(int srcSrid, int tarSrid) {
+		return get("EPSG:" + srcSrid, "EPSG:"+tarSrid);
+	}
 	public static CoordinateTransform get(String src, String tar) {
 		return new CoordinateTransform(CRSUtils.toCRS(src), CRSUtils.toCRS(tar));
 	}
@@ -58,7 +61,7 @@ public class CoordinateTransform {
 	
 	public Geometry transform(Geometry src) {
 		try {
-			return m_geomCST.transform(src);
+			return (src != null) ? m_geomCST.transform(src) : null;
 		}
 		catch ( TransformException e ) {
 			throw new IllegalArgumentException("invalid coordinate: " + src, e);
@@ -67,9 +70,9 @@ public class CoordinateTransform {
 	
 	public Envelope transform(Envelope src) {
 		try {
-			return JTS.transform(src, m_trans);
+			return (src != null) ? JTS.transform(src, m_trans) : null;
 		}
-		catch ( TransformException e ) {
+		catch ( Exception e ) {
 			throw new IllegalArgumentException("invalid coordinate: " + src, e);
 		}
 	}
@@ -77,7 +80,7 @@ public class CoordinateTransform {
 	public Coordinate transform(Coordinate src) {
 		try {
 			Coordinate tar = new Coordinate();
-			return JTS.transform(src, tar, m_trans);
+			return (tar != null) ? JTS.transform(src, tar, m_trans) : null;
 		}
 		catch ( TransformException e ) {
 			throw new IllegalArgumentException("invalid coordinate: " + src, e);
@@ -86,6 +89,9 @@ public class CoordinateTransform {
 	
 	public static @Nullable CoordinateTransform getTransformToWgs84(String srid) {
 		return (srid.equals("EPSG:4326")) ? null : get(srid, "EPSG:4326");
+	}
+	public static @Nullable CoordinateTransform getTransformToWgs84(int fromSrid) {
+		return (fromSrid == 4326) ? null : get(fromSrid, 4326);
 	}
 	
 	public static Envelope transformToWgs84(Envelope envl, String srid) {
@@ -97,6 +103,9 @@ public class CoordinateTransform {
 			return envl;
 		}
 	}
+	public static Envelope transformToWgs84(Envelope envl, int srid) {
+		return transformToWgs84(envl, "EPSG:" + srid);
+	}
 	
 	public static Geometry transform(Geometry geom, String srcSrid, String destSrid) {
 		if ( geom != null ) {
@@ -104,6 +113,17 @@ public class CoordinateTransform {
 		}
 		else {
 			return geom;
+		}
+	}
+	public static Envelope transform(Envelope envl, int srcSrid, int destSrid) {
+		return transform(envl, "EPSG:" + srcSrid, "EPSG:" + destSrid);
+	}
+	public static Envelope transform(Envelope envl, String srcSrid, String destSrid) {
+		if ( envl != null ) {
+			return get(srcSrid, destSrid).transform(envl);
+		}
+		else {
+			return envl;
 		}
 	}
 }

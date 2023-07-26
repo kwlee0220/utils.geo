@@ -158,7 +158,7 @@ public class GeoUtils {
 		return Tuple.of(toPoint(envl.getMinX(), envl.getMinY()), toPoint(envl.getMaxX(), envl.getMaxY()));
 	}
 	
-	public static Polygon toPolygon(Coordinate[] shell) {
+	public static Polygon toPolygon(Coordinate... shell) {
 		return GEOM_FACT.createPolygon(shell);
 	}
 	

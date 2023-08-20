@@ -6,6 +6,7 @@ package utils.geo.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +37,7 @@ import com.google.common.base.Preconditions;
 
 import utils.func.FOption;
 import utils.func.Tuple;
+import utils.stream.FStream;
 
 /**
  * 
@@ -118,6 +120,15 @@ public class GeoUtils {
 	
 	public static Point toPoint(double x, double y) {
 		return GEOM_FACT.createPoint(new Coordinate(x, y));
+	}
+	
+	public static Point plus(Point pt1, Point pt2) {
+		return toPoint(pt1.getX() + pt2.getX(), pt1.getY() + pt2.getY());
+	}
+	
+	public static Point average(Collection<Point> pts) {
+		Point total = FStream.from(pts).reduce(GeoUtils::plus);
+		return toPoint(total.getX() / pts.size(), total.getY() / pts.size());
 	}
 	
 	public static Point toPoint(Coordinate coord) {

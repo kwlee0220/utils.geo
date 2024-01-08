@@ -368,7 +368,7 @@ public class Shapefile implements Closeable {
 		}
 
 		@Override
-		public FOption<Geometry> next() {
+		public FOption<Geometry> nextInGuard() {
 			try {
 				if ( m_reader.hasNext() ) {
 					Record rec = m_reader.nextRecord();
@@ -398,7 +398,7 @@ public class Shapefile implements Closeable {
 		}
 
 		@Override
-		public FOption<Envelope> next() {
+		public FOption<Envelope> nextInGuard() {
 			try {
 				if ( m_reader.hasNext() ) {
 					Record rec = m_reader.nextRecord();
@@ -431,7 +431,7 @@ public class Shapefile implements Closeable {
 		}
 
 		@Override
-		public FOption<SimpleFeature> next() {
+		public FOption<SimpleFeature> nextInGuard() {
 			if ( m_iter.hasNext() ) {
 				return FOption.of(m_iter.next());
 			}

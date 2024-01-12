@@ -165,8 +165,8 @@ public class Shapefile implements Closeable {
 	 * @throws FactoryException	좌표계 정보를 얻는 도중 오류가 발생한 경우.
 	 */
 	public CoordinateReferenceSystem readCrs() throws IOException, FactoryException {
-		try ( FileInputStream is = new FileInputStream(getPrjFile()) ) {
-			PrjFileReader reader = new PrjFileReader(is.getChannel());
+		try ( FileInputStream is = new FileInputStream(getPrjFile()); 
+				PrjFileReader reader = new PrjFileReader(is.getChannel()); ) {
 			return reader.getCoordinateReferenceSystem();
 		}
 	}
@@ -241,7 +241,6 @@ public class Shapefile implements Closeable {
 			finally {
 				if ( reader != null ) {
 					Try.run(reader::close);
-					reader = null;
 				}
 			}
 		}

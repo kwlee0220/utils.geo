@@ -56,7 +56,7 @@ public class GeoClientUtils {
 	
 	public final static GeometryFactory GEOM_FACT = new GeometryFactory();
 	public final static Point EMPTY_POINT = GEOM_FACT.createPoint((Coordinate)null);
-	public final static MultiPoint EMPTY_MULTIPOINT = GEOM_FACT.createMultiPoint((Coordinate[])null);
+	public final static MultiPoint EMPTY_MULTIPOINT = GEOM_FACT.createMultiPointFromCoords((Coordinate[])null);
 	public final static LineString EMPTY_LINESTRING = GEOM_FACT.createLineString(new Coordinate[0]);
 	public final static LinearRing EMPTY_LINEARRING = GEOM_FACT.createLinearRing(new Coordinate[0]);
 	public final static MultiLineString EMPTY_MULTILINESTRING = GEOM_FACT.createMultiLineString(null);
@@ -490,7 +490,7 @@ public class GeoClientUtils {
 		return FStream.from(new GeometryIterator<>(geom));
 	}
 
-	private static final String DEFAULT_GEOM_COLUMN = "the_geom";
+//	private static final String DEFAULT_GEOM_COLUMN = "the_geom";
 	
 	public static Size2d divide(Envelope envl, Size2i unit) {
 		double xcount = envl.getWidth() / unit.getWidth();

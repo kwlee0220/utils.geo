@@ -26,6 +26,7 @@ class GeometryIterator<T extends Geometry> implements Iterator<T> {
 		return m_idx < m_length;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T next() {
 		if ( hasNext() ) {

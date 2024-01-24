@@ -18,7 +18,7 @@ ext {
 	commons_io_version = '2.6'
 }
 dependencies {
-	compile project(":utils")
+	implementation project(":utils")
 	
 	// GeoTools
 	api "org.geotools:gt-shapefile:${geotools_version}"

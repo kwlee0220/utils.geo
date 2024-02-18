@@ -1,4 +1,7 @@
-apply plugin: 'java-library'
+plugins {
+	id 'java-library'
+	id 'eclipse'
+}
 
 group = 'etri'
 version = '24.01.17'
@@ -8,7 +11,10 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenLocal()
-	maven { url "http://repo.osgeo.org/repository/release/" }
+	maven {
+		url "http://repo.osgeo.org/repository/release/"
+		allowInsecureProtocol = true
+	}
     mavenCentral()
 }
 
@@ -18,7 +24,7 @@ ext {
 	commons_io_version = '2.6'
 }
 dependencies {
-	implementation project(":utils")
+	implementation project(':utils')
 	
 	// GeoTools
 	api "org.geotools:gt-shapefile:${geotools_version}"
@@ -40,54 +46,4 @@ task javadocJar(type: Jar) {
 artifacts {
 	archives sourceJar
 	archives javadocJar
-}
-
-apply plugin: 'maven-publish'
-publishing {
-	publications {
-		commonGrpc(MavenPublication) {
-			from components.java
-			
-			artifact sourceJar
-			artifact javadocJar
-		}
-	}
-}
-
-apply plugin: 'eclipse'
-eclipse {
-	classpath {
-		file {
-			withXml {
-				def node = it.asNode()
-				node.appendNode('classpathentry', [kind: 'output', path: 'classes'])
-			}
-			
-			whenMerged { cp ->
-				Map entryByPath = cp.entries.groupBy { entry -> entry.path }
-				entryByPath.each { key, values ->
-					if ( values.size() > 1 ) {
-            			def entry = values.first()
-            			if ( entry.kind == 'src' ) {
-            				entry.includes = []
-            				entry.excludes = []
-            			}
-            			int index = cp.entries.indexOf entry
-            			cp.entries.removeAll values
-            			cp.entries.add index, entry
-					}
-				}
-				cp.entries.each { entry ->
-					if ( entry.kind == 'src' && entry.hasProperty('output') ) {
-						if ( entry.path.startsWith("src/test/") ) {
-							entry.output = 'test_classes'
-						}
-						else {
-							entry.output = 'classes'
-						}
-					}
-				}
-			}
-		}
-	}
 }

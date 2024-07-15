@@ -133,7 +133,7 @@ public class PointLeafNode<T extends PointValue, P extends PointPartition<T>> ex
 		if ( s_logger.isDebugEnabled() ) {
 			String details = FStream.of(childNodes)
 									.zipWithIndex()
-									.map(t -> String.format("%d:%d", t._2, t._1.getValueCount()))
+									.map(t -> String.format("%d:%d", t.index(), t.value().getValueCount()))
 									.join(", ");
 			s_logger.debug(String.format("splitted: %d -> %s", getValueCount(), details));
 		}

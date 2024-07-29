@@ -6,8 +6,10 @@ plugins {
 group = 'etri'
 version = '24.01.17'
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
+}
 [compileJava,compileTestJava]*.options*.encoding = 'UTF-8'
 
 repositories {
@@ -42,12 +44,10 @@ dependencies {
 }
 
 task sourceJar(type: Jar) {
-	classifier 'sources'
 	from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar) {
-	classifier 'javadoc'
 	from javadoc.destinationDir
 }
 

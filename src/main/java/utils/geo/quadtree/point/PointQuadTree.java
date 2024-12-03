@@ -8,9 +8,9 @@ import org.locationtech.jts.geom.Envelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
-import utils.Utilities;
 import utils.geo.quadtree.TooBigValueException;
 import utils.stream.FStream;
 
@@ -44,7 +44,7 @@ public class PointQuadTree<T extends PointValue, P extends PointPartition<T>> {
 	 * @param root	생성될 QuadTree의 최상위 노드.
 	 */
 	public PointQuadTree(PointNode<T,P> root) {
-		Utilities.checkNotNullArgument(root, "root is null");
+		Preconditions.checkArgument(root != null, "root is null");
 
 		m_root = root;
 		m_rootBounds = root.getBounds();
@@ -73,7 +73,7 @@ public class PointQuadTree<T extends PointValue, P extends PointPartition<T>> {
 	 * @throws TooBigValueException	삽입할 데이터가 너무커서 단말노드에 저장할 수 없는 경우.
 	 */
 	public PointLeafNode<T,P> insert(T value) throws TooBigValueException {
-		Utilities.checkNotNullArgument(value);
+		Preconditions.checkArgument(value != null);
 		
 		while ( m_root instanceof PointLeafNode ) {
 			PointLeafNode<T,P> lroot = (PointLeafNode<T,P>)m_root;

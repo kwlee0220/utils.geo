@@ -10,7 +10,8 @@ import org.locationtech.jts.geom.Envelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.Utilities;
+import com.google.common.base.Preconditions;
+
 import utils.geo.quadtree.TooBigValueException;
 import utils.stream.FStream;
 
@@ -59,7 +60,7 @@ public class PointLeafNode<T extends PointValue, P extends PointPartition<T>> ex
 	}
 
 	public FStream<T> query(Envelope key) {
-		Utilities.checkNotNullArgument(key, "search key");
+		Preconditions.checkArgument(key != null, "search key");
 
 		if ( getBounds().intersects(key) ) {
 			return m_partition.intersects(key);

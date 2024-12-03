@@ -322,8 +322,8 @@ public class GeoClientUtils {
 	}
 	
 	public static Geometry cast(Geometry geom, Geometries dstType) {
-		Utilities.checkNotNullArgument(geom, "geom is null");
-		Utilities.checkNotNullArgument(dstType, "dstType is null");
+		Preconditions.checkArgument(geom != null, "geom is null");
+		Preconditions.checkArgument(dstType != null, "dstType is null");
 		
 		if ( Geometries.get(geom) == dstType || dstType == Geometries.GEOMETRY ) {
 			return geom;
@@ -362,8 +362,8 @@ public class GeoClientUtils {
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends Geometry> T cast(Geometry geom, Class<T> dstType) {
-		Utilities.checkNotNullArgument(geom, "geom is null");
-		Utilities.checkNotNullArgument(dstType, "dstType is null");
+		Preconditions.checkArgument(geom != null, "geom is null");
+		Preconditions.checkArgument(dstType != null, "dstType is null");
 		
 		if ( dstType.isInstance(geom) || dstType == Geometry.class ) {
 			return (T)geom;

@@ -11,7 +11,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.Utilities;
+import com.google.common.base.Preconditions;
+
 import utils.io.FileUtils;
 import utils.stream.FStream;
 
@@ -27,7 +28,7 @@ public class SimpleFeatures {
 	}
 	
 	public static SimpleFeatureCollection toFeatureCollection(List<SimpleFeature> features) {
-		Utilities.checkNotNullArgument(features);
+		Preconditions.checkArgument(features != null);
 		
 		SimpleFeatureType sfType = features.get(0).getType();
 		return new ListFeatureCollection(sfType, features);

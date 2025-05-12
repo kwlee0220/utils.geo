@@ -35,8 +35,8 @@ import org.opengis.geometry.BoundingBox;
 
 import com.google.common.base.Preconditions;
 
+import utils.Tuple;
 import utils.func.FOption;
-import utils.func.Tuple;
 import utils.stream.FStream;
 
 /**

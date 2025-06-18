@@ -54,7 +54,7 @@ public class Shapefile implements Closeable {
 	private final File m_file;
 	private final Charset m_charset;
 	private final ShpFiles m_shpFiles;
-	@Nullable private ShapefileHeader m_shpHeader;
+	private @Nullable ShapefileHeader m_shpHeader;
 	private final Lazy<DbaseFileHeader> m_dbfHeader;
 	
 	/**

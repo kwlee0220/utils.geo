@@ -22,7 +22,7 @@ import utils.stream.FStream;
 public class PointLeafNode<T extends PointValue, P extends PointPartition<T>> extends PointNode<T,P> {
 	private static final Logger s_logger = LoggerFactory.getLogger(PointLeafNode.class);
 	
-	@Nullable private final Function<Envelope,P> m_partSupplier;
+	private final @Nullable Function<Envelope,P> m_partSupplier;
 	private final P m_partition;
 	private PointLeafNode<T,P> m_prev;
 	private PointLeafNode<T,P> m_next;

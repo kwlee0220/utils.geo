@@ -6,8 +6,8 @@ group = 'etri'
 version = '24.01.17'
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 [compileJava,compileTestJava]*.options*.encoding = 'UTF-8'
 
@@ -23,7 +23,7 @@ repositories {
 ext {
 	logback_version = '1.3.14'
 	guava_version = '33.4.8-jre'
-	checker_version = '3.49.4'
+	findbugs_version = '3.0.2'
 	
 	geotools_version = '26.1'
 	commons_io_version = '2.6'
@@ -31,12 +31,12 @@ ext {
 dependencies {
 	implementation project(':utils')
 	
+	compileOnly "com.google.code.findbugs:jsr305:${findbugs_version}"
+	
 	// Logback
 	implementation "ch.qos.logback:logback-classic:${logback_version}"
 	
 	api "com.google.guava:guava:${guava_version}"
-	
-	implementation("org.checkerframework:checker:${checker_version}")
 	
 	// GeoTools
 	api "org.geotools:gt-shapefile:${geotools_version}"

@@ -38,7 +38,7 @@ public class PointNonLeafNode<T extends PointValue, P extends PointPartition<T>>
 
 	@Override
 	public int getDepth() {
-		return FStream.of(m_children).mapToInt(node -> node.getDepth()).maxValue() + 1;
+		return FStream.of(m_children).mapToInt(node -> node.getDepth()).max().get() + 1;
 	}
 	
 	public PointNode<T,P>[] getChildrenNode() {

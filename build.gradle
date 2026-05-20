@@ -1,5 +1,6 @@
 plugins {
 	id 'java-library'
+	id 'eclipse'
 }
 
 group = 'etri'
@@ -44,3 +45,30 @@ dependencies {
 	
 	implementation "commons-io:commons-io:${commons_io_version}"
 }
+
+tasks.named('test') {
+	useJUnit()
+	jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
+}
+
+eclipse {
+	classpath {
+		defaultOutputDir = file('build/classes/java/main')
+		file {
+			whenMerged { cp ->
+				cp.entries.each { entry ->
+					if (entry.kind == 'src' && entry.path == 'src/main/java') {
+						entry.output = 'build/classes/java/main'
+					}
+					if (entry.kind == 'src' && entry.path == 'src/main/resources') {
+						entry.output = 'build/classes/java/main'
+					}
+					if (entry.kind == 'src' && entry.path == 'src/test/java') {
+						entry.output = 'build/classes/java/test'
+					}
+				}
+			}
+		}
+	}
+}
+

@@ -2,7 +2,7 @@ package utils.geo.quadtree.point;
 
 import org.locationtech.jts.geom.Envelope;
 
-import utils.Utilities;
+import utils.Preconditions;
 
 /**
  * 
@@ -15,7 +15,7 @@ public abstract class PointNode<T extends PointValue, P extends PointPartition<T
 	public abstract int getDepth();
 	
 	protected PointNode(Envelope envl) {
-		Utilities.checkArgument(envl != null, "bounds is null");
+		Preconditions.checkArgument(envl != null, "bounds is null");
 		
 		m_bounds = envl;
 	}

@@ -127,7 +127,7 @@ public class GeoUtils {
 	}
 	
 	public static Point average(Collection<Point> pts) {
-		Point total = FStream.from(pts).reduce(GeoUtils::plus);
+		Point total = FStream.from(pts).reduce(GeoUtils::plus).get();
 		return toPoint(total.getX() / pts.size(), total.getY() / pts.size());
 	}
 	

@@ -30,7 +30,7 @@ ext {
 	commons_io_version = '2.6'
 }
 dependencies {
-	implementation project(':utils')
+	api project(':utils')
 	
 	compileOnly "com.google.code.findbugs:jsr305:${findbugs_version}"
 	
